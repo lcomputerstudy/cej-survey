@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lcomputerstudy.example.mapper.UserMapper">
+
+	<select id="readAuthorities" parameterType="String" resultType="org.springframework.security.core.authority.SimpleGrantedAuthority">
+		SELECT			u_auth
+		FROM			userauth
+		WHERE			1=1
+		AND				u_id = #{username}
+	</select>
+	
+	<select id="readUser" parameterType="String" resultType="User">
+		SELECT			u_id as username,
+						u_password as password,
+						u_name as name,
+						u_phone as phone,
+						u_isAccountNonExpired as isAccountNonExpired,
+						u_isAccountNonLocked as isAccountNonLocked,
+						u_isCredentialNonExpired as isCredentialsNonExpired,
+						u_isEnabled as isEnabled
+		FROM			userlist
+		WHERE			1=1
+		AND				u_id = #{username}
+	</select>
+	
+	<insert id="createUser" parameterType="User">
+		INSERT INTO userlist(
+					u_id,
+					u_password,
+					u_name,
+					u_phone,
+					u_isAccountNonExpired,
+					u_isAccountNonLocked,
+					u_isCredentialNonExpired,
+					u_isEnabled
+					)
+		VALUES (
+				#{username},
+				#{password},
+				#{name},
+				#{phone},
+				#{isAccountNonExpired},
+				#{isAccountNonLocked},
+				#{isCredentialsNonExpired},
+				#{isEnabled}
+				)
+	</insert>
+	<insert id="createAuthority" parameterType="org.springframework.security.core.GrantedAuthority">
+		INSERT INTO userauth (
+			u_id,
+			u_auth
+		) VALUES
+		<foreach collection="authorities" item="authority" index="index" separator=",">
+			(#{username}, #{authority.role})
+		</foreach>
+		ON DUPLICATE KEY
+			UPDATE
+				u_id = #{username}
+	</insert>
+	
+	<select id="readUser_refresh" resultType="UserInfo">
+		SELECT			ta.u_id username,
+						ta.u_name name,
+						ta.u_phone phone,
+						tb.u_auth auth
+		FROM			userlist ta
+		LEFT JOIN (
+					SELECT		ta.u_id,
+								GROUP_CONCAT(ta.u_auth SEPARATOR ",") u_auth
+					FROM		userauth ta
+					GROUP BY	ta.u_id
+					) tb ON ta.u_id = tb.u_id
+		WHERE		ta.u_id = #{username} 
+	</select>
+	
+	<delete id="deleteAuth" parameterType="String">
+		DELETE
+		FROM			userauth
+		WHERE			u_auth = 'ROLE_ADMIN' &amp;&amp; u_id = #{id}
+	</delete>
+
+</mapper>

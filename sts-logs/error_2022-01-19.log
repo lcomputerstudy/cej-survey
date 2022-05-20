@@ -1,0 +1,13 @@
+16:09:02.339 INFO  --- [main] c.l.example.SurveyApplication : Starting SurveyApplication using Java 16.0.2 on DESKTOP-BBQ5NV4 with PID 5920 (C:\Users\jeong\eclipse-workspace\survey\bin\main started by jeong in C:\Users\jeong\eclipse-workspace\survey) 
+16:09:02.372 DEBUG --- [main] c.l.example.SurveyApplication : Running with Spring Boot v2.6.2, Spring v5.3.14 
+16:09:02.372 INFO  --- [main] c.l.example.SurveyApplication : The following profiles are active: local 
+16:09:02.696 WARN  --- [main] o.s.b.c.c.ConfigDataEnvironment : Property 'spring.profiles[0]' imported from location 'class path resource [application.yml]' is invalid and should be replaced with 'spring.config.activate.on-profile' [origin: class path resource [application.yml] - 11:5] 
+16:09:10.275 DEBUG --- [main] c.l.example.config.AuthTokenFilter : Filter 'authenticationJwtTokenFilter' configured for use 
+16:09:11.679 INFO  --- [main] c.l.example.SurveyApplication : Started SurveyApplication in 13.005 seconds (JVM running for 14.791) 
+16:13:14.563 DEBUG --- [http-nio-9010-exec-1] c.l.e.m.SurveyMapper.getsurveylist : ==>  Preparing: SELECT * FROM (select @rownum := @rownum-1 as rownum, ta.* FROM survey ta, (select @rownum := (select COUNT(*)+1 from survey ta)) tb ORDER BY datetime desc)a 
+16:13:14.584 DEBUG --- [http-nio-9010-exec-1] c.l.e.m.SurveyMapper.getsurveylist : ==> Parameters:  
+16:13:14.709 TRACE --- [http-nio-9010-exec-1] c.l.e.m.SurveyMapper.getsurveylist : <==    Columns: rownum, s_num, title, disc, writer, datetime, hit 
+16:13:14.711 TRACE --- [http-nio-9010-exec-1] c.l.e.m.SurveyMapper.getsurveylist : <==        Row: 1.0, 59, test, disc, c, 2021-12-29 09:29:00, 0 
+16:13:14.728 TRACE --- [http-nio-9010-exec-1] c.l.e.m.SurveyMapper.getsurveylist : <==        Row: 2.0, 58, dd, ff, c, 2021-12-28 22:45:37, 0 
+16:13:14.729 TRACE --- [http-nio-9010-exec-1] c.l.e.m.SurveyMapper.getsurveylist : <==        Row: 3.0, 57, 제목, 설명, c, 2021-12-28 17:55:08, 0 
+16:13:14.730 DEBUG --- [http-nio-9010-exec-1] c.l.e.m.SurveyMapper.getsurveylist : <==      Total: 3 
